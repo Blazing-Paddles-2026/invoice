@@ -1,17 +1,567 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Blazing Paddles Sponsor Form</title>
-    <script type="module" crossorigin src="/invoice/assets/index-C0QFk3RJ.js"></script>
-    <link rel="stylesheet" crossorigin href="/invoice/assets/index-CeAqcotg.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blazing Paddles - Sponsor Commitment Form</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; font-size: 12px; }
+    .container { max-width: 950px; margin: 0 auto; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
+    /* Header */
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid #e5e5e5; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .header-left img { width: 32px; height: 32px; }
+    .header-left .org { font-size: 8px; color: #c41e1e; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+    .header-left .sub { font-size: 7px; color: #999; letter-spacing: 0.1em; text-transform: uppercase; }
+    .header-right { text-align: right; }
+    .header-right .presented { font-size: 7px; color: #999; letter-spacing: 0.15em; text-transform: uppercase; }
+    .header-right .kalahari { font-size: 13px; font-weight: 600; }
+
+    /* Title */
+    .title { text-align: center; padding: 15px 20px; border-bottom: 3px solid #c41e1e; }
+    .title .spaced { font-size: 10px; color: #666; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 4px; }
+    .title h1 { font-size: 42px; font-weight: 900; line-height: 1; text-transform: uppercase; }
+    .title h1 span { color: #c41e1e; }
+    .title .event-info { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+
+    /* Main layout */
+    .main { display: flex; }
+    .left { flex: 1; border-right: 1px solid #e5e5e5; }
+    .right { width: 260px; background: #fafafa; }
+
+    /* Section headers */
+    .section-head { background: #1a1a2e; color: #fff; padding: 6px 16px; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; }
+
+    /* Form sections */
+    .form-section { padding: 10px 16px; }
+    .field { margin-bottom: 8px; }
+    .field label { display: block; font-size: 8px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+    .field label .req { color: #c41e1e; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="url"],
+    .field input[type="number"],
+    .field input[type="date"] {
+      width: 100%; padding: 5px 8px; border: 1px solid #ccc; border-radius: 3px; font-size: 12px;
+      transition: border-color 0.2s;
+    }
+    .field input:focus { border-color: #c41e1e; outline: none; box-shadow: 0 0 0 2px rgba(196,30,30,0.1); }
+    .field-row { display: flex; gap: 8px; }
+    .field-row .field { flex: 1; }
+
+    /* Sponsorship tiers */
+    .tier { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border: 1px solid #ddd; border-radius: 3px; margin-bottom: 4px; cursor: pointer; transition: all 0.2s; }
+    .tier:hover { border-color: #c41e1e; }
+    .tier.active { border-color: #c41e1e; background: #fdf2f2; }
+    .tier input { accent-color: #c41e1e; }
+    .tier-name { font-size: 9px; font-weight: 700; color: #333; text-transform: uppercase; letter-spacing: 0.1em; flex: 1; }
+    .tier-amount { font-size: 16px; font-weight: 900; color: #c41e1e; }
+
+    /* Additional donation */
+    .addon { display: flex; align-items: center; gap: 8px; padding-top: 6px; border-top: 1px solid #e5e5e5; margin-top: 6px; }
+    .addon-label { font-size: 8px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+    .addon-line { flex: 1; height: 1px; background: #e5e5e5; }
+    .addon input { width: 60px; padding: 4px 4px 4px 16px; border: 1px solid #ccc; border-radius: 3px; font-size: 12px; }
+
+    /* Payment */
+    .payment-option { display: flex; align-items: flex-start; gap: 6px; padding: 6px; border: 1px solid #ddd; border-radius: 3px; margin-bottom: 4px; cursor: pointer; }
+    .payment-option.active { border-color: #c41e1e; background: #fdf2f2; }
+    .payment-option input { accent-color: #c41e1e; margin-top: 1px; }
+    .payment-label { font-size: 11px; font-weight: 600; }
+    .payment-desc { font-size: 9px; color: #666; }
+    .payment-address { font-size: 9px; color: #c41e1e; font-weight: 600; }
+
+    /* File upload */
+    .upload-zone { border: 1px dashed #ccc; border-radius: 4px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .upload-zone:hover { border-color: #c41e1e; }
+    .upload-zone.has-file { border-color: #c41e1e; background: #fdf2f2; }
+    .upload-zone .upload-text { font-size: 10px; color: #666; }
+    .upload-zone .upload-text span { color: #c41e1e; font-weight: 600; }
+
+    /* Signature */
+    .sig-pad { border: 1px dashed #ccc; border-radius: 4px; height: 70px; background: #fafafa; cursor: crosshair; width: 100%; }
+
+    /* Benefits */
+    .benefit-card { border: 1px solid #ddd; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+    .benefit-head { background: #c41e1e; color: #fff; text-align: center; padding: 4px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+    .benefit-body { background: #fff; padding: 8px; }
+    .benefit-price { text-align: center; font-size: 18px; font-weight: 900; color: #c41e1e; margin-bottom: 4px; }
+    .benefit-list { list-style: none; }
+    .benefit-list li { font-size: 9px; color: #555; padding: 2px 0; }
+    .benefit-list li::before { content: "\2605"; color: #c41e1e; margin-right: 4px; }
+
+    /* Signature row */
+    .sig-row { display: flex; border-top: 1px solid #e5e5e5; }
+    .sig-col { padding: 8px 16px; }
+    .sig-col.sig { flex: 1; border-right: 1px solid #e5e5e5; }
+    .sig-col.name { width: 160px; border-right: 1px solid #e5e5e5; }
+    .sig-col.date { width: 120px; }
+
+    /* Submit */
+    .submit-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #fafafa; border-top: 1px solid #e5e5e5; }
+    .submit-btn { background: #c41e1e; color: #fff; border: none; padding: 8px 24px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .submit-btn:hover { background: #a11818; }
+    .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .error { color: #c41e1e; font-size: 10px; }
+
+    /* Footer */
+    .footer { background: #1a1a2e; color: #fff; padding: 10px 20px; }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; }
+    .footer-logo { display: flex; align-items: center; gap: 6px; }
+    .footer-logo img { width: 24px; height: 24px; }
+    .footer-logo .name { font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .footer-logo .sub { font-size: 7px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+    .footer-contact { text-align: center; }
+    .footer-contact .q { font-size: 9px; color: #ff6b6b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+    .footer-contact .info { font-size: 8px; color: #aaa; }
+    .footer-kalahari { text-align: right; }
+    .footer-kalahari .presented { font-size: 7px; color: #666; text-transform: uppercase; letter-spacing: 0.15em; }
+    .footer-kalahari .name { font-size: 11px; font-weight: 700; }
+    .footer-kalahari .sub { font-size: 7px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+    .footer-rule { height: 1px; background: #333; margin: 8px 0 6px; }
+    .footer-ein { text-align: center; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .success { text-align: center; padding: 60px 20px; }
+    .success img { width: 64px; height: 64px; margin-bottom: 16px; }
+    .success h2 { font-size: 24px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
+    .success .line { width: 48px; height: 2px; background: #c41e1e; margin: 0 auto 12px; }
+    .success p { color: #666; font-size: 13px; margin-bottom: 16px; }
+    .success-btn { background: #c41e1e; color: #fff; border: none; padding: 8px 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; border-radius: 3px; }
+
+    #form-view { display: block; }
+    #success-view { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Form View -->
+    <div id="form-view">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-left">
+          <img src="https://blazing-paddles-2026.github.io/invoice/blazing-paddles-logo.png" alt="">
+          <div>
+            <div class="org">Round Rock Fire Foundation</div>
+            <div class="sub">Pickleball Tournament</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="presented">Presented by</div>
+          <div class="kalahari">Kalahari Resorts & Conventions</div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="title">
+        <div class="spaced">S P O N S O R S H I P &nbsp; C O M M I T M E N T &nbsp; F O R M</div>
+        <h1>BLAZING <span>PADDLES</span></h1>
+        <div class="event-info">Saturday, October 10, 2026 &nbsp; | &nbsp; Tejas Pickleball Club, Georgetown, TX</div>
+      </div>
+
+      <!-- Main -->
+      <div class="main">
+        <!-- Left Column -->
+        <div class="left">
+          <!-- Business Info -->
+          <div class="section-head">B U S I N E S S &nbsp; I N F O R M A T I O N</div>
+          <div class="form-section">
+            <div class="field">
+              <label>Business Name <span class="req">*</span></label>
+              <input type="text" id="businessName" placeholder="Company / Organization" required>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Primary Contact <span class="req">*</span></label>
+                <input type="text" id="primaryContact" placeholder="Full name" required>
+              </div>
+              <div class="field">
+                <label>Title</label>
+                <input type="text" id="title" placeholder="Job title">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" id="email" placeholder="email@company.com" required>
+              </div>
+              <div class="field">
+                <label>Phone <span class="req">*</span></label>
+                <input type="tel" id="phone" placeholder="(512) 000-0000" required>
+              </div>
+            </div>
+            <div class="field">
+              <label>Business Website</label>
+              <input type="url" id="businessWebsite" placeholder="https://www.company.com">
+            </div>
+          </div>
+
+          <!-- Sponsorship Level -->
+          <div class="section-head">S P O N S O R S H I P &nbsp; L E V E L</div>
+          <div class="form-section">
+            <div class="tier" onclick="selectTier('chief', this)">
+              <input type="radio" name="sponsorshipLevel" value="chief" id="chief">
+              <span class="tier-name">CHIEF SPONSOR</span>
+              <span class="tier-amount">$5,000</span>
+            </div>
+            <div class="tier" onclick="selectTier('lieutenant', this)">
+              <input type="radio" name="sponsorshipLevel" value="lieutenant" id="lieutenant">
+              <span class="tier-name">LIEUTENANT SPONSOR</span>
+              <span class="tier-amount">$2,500</span>
+            </div>
+            <div class="tier" onclick="selectTier('firefighter', this)">
+              <input type="radio" name="sponsorshipLevel" value="firefighter" id="firefighter">
+              <span class="tier-name">FIREFIGHTER SPONSOR</span>
+              <span class="tier-amount">$1,000</span>
+            </div>
+            <div class="addon">
+              <span class="addon-label">Other Donation</span>
+              <div class="addon-line"></div>
+              <span style="color:#999;font-weight:700;">$</span>
+              <input type="number" id="additionalDonation" placeholder="0" min="0">
+            </div>
+          </div>
+
+          <!-- Recognition -->
+          <div class="section-head">R E C O G N I T I O N</div>
+          <div class="form-section">
+            <div class="field">
+              <label>Sponsor Name (as it should appear in print) <span class="req">*</span></label>
+              <input type="text" id="recognitionName" placeholder="e.g., ABC Company, LLC" required>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Website</label>
+                <input type="url" id="recognitionWebsite" placeholder="https://">
+              </div>
+              <div class="field">
+                <label>LinkedIn</label>
+                <input type="text" id="linkedin" placeholder="linkedin.com/...">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Facebook</label>
+                <input type="text" id="facebook" placeholder="facebook.com/...">
+              </div>
+              <div class="field">
+                <label>Instagram</label>
+                <input type="text" id="instagram" placeholder="@handle">
+              </div>
+            </div>
+            <div class="field">
+              <label>Logo Upload</label>
+              <div class="upload-zone" id="uploadZone" onclick="document.getElementById('logoFile').click()">
+                <input type="file" id="logoFile" accept=".ai,.eps,.svg,.pdf,.png,.jpg,.jpeg" style="display:none" onchange="handleFile(this)">
+                <div class="upload-text"><span>Click to browse</span> or drag &mdash; AI, EPS, SVG, PDF, PNG, JPG</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="section-head">P A Y M E N T &nbsp; O P T I O N S</div>
+          <div class="form-section">
+            <div class="payment-option" onclick="selectPayment('invoice', this)">
+              <input type="radio" name="payment" value="invoice" id="payInvoice">
+              <div>
+                <div class="payment-label">Please Send an Invoice</div>
+                <div class="payment-desc">We will email a professional invoice to the address provided.</div>
+              </div>
+            </div>
+            <div class="payment-option" onclick="selectPayment('check', this)">
+              <input type="radio" name="payment" value="check" id="payCheck">
+              <div>
+                <div class="payment-label">I Will Mail a Check</div>
+                <div class="payment-desc">Payable to: Round Rock Fire Foundation</div>
+                <div class="payment-address">P.O. Box 2114, Round Rock, TX 78680</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Benefits -->
+        <div class="right">
+          <div class="section-head">B E N E F I T S &nbsp; S U M M A R Y</div>
+          <div style="padding:10px;">
+            <div class="benefit-card">
+              <div class="benefit-head">CHIEF SPONSOR</div>
+              <div class="benefit-body">
+                <div class="benefit-price">$5,000</div>
+                <ul class="benefit-list">
+                  <li>Premier logo on all event materials</li>
+                  <li>Opening ceremony recognition</li>
+                  <li>2 Team registrations (8 players)</li>
+                  <li>Large banner & sponsor table</li>
+                </ul>
+              </div>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-head">LIEUTENANT SPONSOR</div>
+              <div class="benefit-body">
+                <div class="benefit-price">$2,500</div>
+                <ul class="benefit-list">
+                  <li>Logo on materials & signage</li>
+                  <li>Opening ceremony recognition</li>
+                  <li>1 Team registration (4 players)</li>
+                  <li>Sponsor table at event</li>
+                </ul>
+              </div>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-head">FIREFIGHTER SPONSOR</div>
+              <div class="benefit-body">
+                <div class="benefit-price">$1,000</div>
+                <ul class="benefit-list">
+                  <li>Logo on signage & website</li>
+                  <li>Opening ceremony recognition</li>
+                  <li>1 Team registration (4 players)</li>
+                </ul>
+              </div>
+            </div>
+            <div style="font-size:8px;color:#999;text-align:center;font-style:italic;margin-top:4px;">
+              Benefits subject to commitment timing and print deadlines.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature Row -->
+      <div class="sig-row">
+        <div class="sig-col sig">
+          <label>Authorized Signature <span class="req">*</span></label>
+          <p style="font-size:8px;color:#999;margin-bottom:4px;">By signing, I acknowledge my commitment to sponsor the 2026 Blazing Paddles Pickleball Tournament.</p>
+          <canvas class="sig-pad" id="sigCanvas"></canvas>
+          <div style="text-align:right;">
+            <button type="button" onclick="clearSig()" style="font-size:8px;color:#999;background:none;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;">Clear</button>
+          </div>
+        </div>
+        <div class="sig-col name">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="signerName" placeholder="Type your full name" required>
+        </div>
+        <div class="sig-col date">
+          <label>Date <span class="req">*</span></label>
+          <input type="date" id="date" required>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-bar">
+        <div id="errorMsg" class="error"></div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:8px;color:#999;text-transform:uppercase;letter-spacing:0.1em;">Confirmation email will be sent.</span>
+          <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-top">
+          <div class="footer-logo">
+            <img src="https://blazing-paddles-2026.github.io/invoice/blazing-paddles-logo.png" alt="">
+            <div>
+              <div class="name">Blazing Paddles</div>
+              <div class="sub">Pickleball Tournament</div>
+            </div>
+          </div>
+          <div class="footer-contact">
+            <div class="q">Questions?</div>
+            <div class="info">pickleball@roundrockfirefoundation.org | (512) 967-1007</div>
+          </div>
+          <div class="footer-kalahari">
+            <div class="presented">Presented by</div>
+            <div class="name">Kalahari</div>
+            <div class="sub">Resorts & Conventions</div>
+          </div>
+        </div>
+        <div class="footer-rule"></div>
+        <div class="footer-ein">Round Rock Fire Foundation is a 501(c)(3) nonprofit organization. EIN: 27-2201871</div>
+      </div>
+    </div>
+
+    <!-- Success View -->
+    <div id="success-view" class="success">
+      <img src="https://blazing-paddles-2026.github.io/invoice/blazing-paddles-logo.png" alt="">
+      <h2>T H A N K &nbsp; Y O U</h2>
+      <div class="line"></div>
+      <p>Your sponsorship commitment has been received.<br>We will be in touch shortly with next steps.</p>
+      <button class="success-btn" onclick="resetForm()">Submit Another</button>
+    </div>
+  </div>
+
+  <script>
+    // Set today's date
+    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+    // Signature canvas
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      ctx.strokeStyle = '#1a1a1a';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.addEventListener('mousedown', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('mousemove', (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseout', () => drawing = false);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('touchend', () => drawing = false);
+
+    function clearSig() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function hasSignature() {
+      const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let i = 3; i < pixelData.length; i += 4) {
+        if (pixelData[i] > 0) return true;
+      }
+      return false;
+    }
+
+    function selectTier(value, el) {
+      document.getElementById(value).checked = true;
+      document.querySelectorAll('.tier').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectPayment(value, el) {
+      document.getElementById('pay' + (value === 'invoice' ? 'Invoice' : 'Check')).checked = true;
+      document.querySelectorAll('.payment-option').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    let uploadedFile = null;
+    function handleFile(input) {
+      if (input.files && input.files[0]) {
+        uploadedFile = input.files[0];
+        const zone = document.getElementById('uploadZone');
+        zone.classList.add('has-file');
+        zone.innerHTML = `<div style="font-size:11px;color:#333;"><strong style="color:#c41e1e;">${uploadedFile.name}</strong> (${(uploadedFile.size/1024/1024).toFixed(1)} MB)</div>`;
+      }
+    }
+
+    // Drag and drop
+    const uploadZone = document.getElementById('uploadZone');
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = '#c41e1e'; });
+    uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = '#ccc'; });
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.style.borderColor = '#ccc';
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        document.getElementById('logoFile').files = files;
+        handleFile(document.getElementById('logoFile'));
+      }
+    });
+
+    async function submitForm() {
+      const btn = document.getElementById('submitBtn');
+      const err = document.getElementById('errorMsg');
+      err.textContent = '';
+
+      // Validate
+      const required = ['businessName', 'primaryContact', 'email', 'phone', 'recognitionName', 'signerName', 'date'];
+      for (const id of required) {
+        if (!document.getElementById(id).value.trim()) {
+          err.textContent = 'Please fill in all required fields.';
+          return;
+        }
+      }
+
+      const tier = document.querySelector('input[name="sponsorshipLevel"]:checked');
+      if (!tier) { err.textContent = 'Please select a sponsorship level.'; return; }
+
+      const payment = document.querySelector('input[name="payment"]:checked');
+      if (!payment) { err.textContent = 'Please select a payment option.'; return; }
+
+      if (!hasSignature()) { err.textContent = 'Please provide your signature.'; return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        const formData = new FormData();
+        formData.append('access_key', '286160e8e1ae46fea44ffb620dc3efbb');
+        formData.append('replyto', document.getElementById('email').value);
+        formData.append('subject', `New Blazing Paddles Sponsor Commitment \u2014 ${document.getElementById('businessName').value}`);
+        formData.append('botcheck', '');
+        formData.append('businessName', document.getElementById('businessName').value);
+        formData.append('primaryContact', document.getElementById('primaryContact').value);
+        formData.append('title', document.getElementById('title').value || 'N/A');
+        formData.append('email', document.getElementById('email').value);
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('businessWebsite', document.getElementById('businessWebsite').value || 'N/A');
+        formData.append('sponsorshipLevel', tier.value);
+        formData.append('additionalDonation', document.getElementById('additionalDonation').value || '0');
+        formData.append('recognitionName', document.getElementById('recognitionName').value);
+        formData.append('recognitionWebsite', document.getElementById('recognitionWebsite').value || 'N/A');
+        formData.append('facebook', document.getElementById('facebook').value || 'N/A');
+        formData.append('instagram', document.getElementById('instagram').value || 'N/A');
+        formData.append('linkedin', document.getElementById('linkedin').value || 'N/A');
+        formData.append('paymentPreference', payment.value);
+        formData.append('signerName', document.getElementById('signerName').value);
+        formData.append('date', document.getElementById('date').value);
+
+        // Signature
+        const sigBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        formData.append('signature', sigBlob, 'signature.png');
+
+        // Logo
+        if (uploadedFile) formData.append('logo', uploadedFile);
+
+        const response = await fetch('https://splitforms.com/api/submit', {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData
+        });
+
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result.message || 'Submission failed');
+
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('success-view').style.display = 'block';
+      } catch (e) {
+        err.textContent = e.message || 'There was an error submitting. Please try again.';
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+      }
+    }
+
+    function resetForm() {
+      document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"]').forEach(i => i.value = '');
+      document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
+      document.querySelectorAll('.tier, .payment-option').forEach(el => el.classList.remove('active'));
+      clearSig();
+      uploadedFile = null;
+      document.getElementById('uploadZone').classList.remove('has-file');
+      document.getElementById('uploadZone').innerHTML = '<div class="upload-text"><span>Click to browse</span> or drag &mdash; AI, EPS, SVG, PDF, PNG, JPG</div>';
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('errorMsg').textContent = '';
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('submitBtn').textContent = 'Submit';
+      document.getElementById('form-view').style.display = 'block';
+      document.getElementById('success-view').style.display = 'none';
+    }
+  </script>
+</body>
 </html>
